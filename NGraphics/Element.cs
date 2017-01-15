@@ -6,7 +6,8 @@ namespace NGraphics
 {
 	public abstract class Element : IDrawable, IEdgeSampleable
 	{
-		public string Id { get; set; }
+        public List<Element> ClipPath { get; set; }
+        public string Id { get; set; }
 		public Transform Transform { get; set; }
 		public virtual Pen Pen { get; set; }
 		public virtual Brush Brush { get; set; }
@@ -44,7 +45,7 @@ namespace NGraphics
 
 		public void Draw (ICanvas canvas)
 		{
-			var t = Transform;
+            var t = Transform;
 			var pushedState = false;
 			try {
 				if (t != NGraphics.Transform.Identity) {
@@ -52,7 +53,17 @@ namespace NGraphics
 					pushedState = true;
 					canvas.Transform (t);
 				}
-				DrawElement (canvas);
+                if (ClipPath != null)
+                {
+                    var layer = canvas.CreateLayer();
+                    Graphic gra = new Graphic();
+                    gra.Children.AddRange(ClipPath);
+                    
+                    //canvas.PushLayer(layer,ref null)
+
+                }
+
+                DrawElement (canvas);
 			} finally {
 				if (pushedState) {
 					canvas.RestoreState ();

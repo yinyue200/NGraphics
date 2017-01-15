@@ -17,9 +17,10 @@ namespace NGraphics
 		public Graphic Graphic { get; private set; }
 
 		readonly Dictionary<string, XElement> defs = new Dictionary<string, XElement> ();
-//		readonly XNamespace ns;
+        readonly Dictionary<string, List<Element>> clippath = new Dictionary<string, List<Element>>();
+        //		readonly XNamespace ns;
 
-		public SvgReader (System.IO.TextReader reader, double pixelsPerInch = 160.0)
+        public SvgReader (System.IO.TextReader reader, double pixelsPerInch = 160.0)
 		{
 			PixelsPerInch = pixelsPerInch;
 			Read (XDocument.Load (reader));
@@ -270,8 +271,15 @@ namespace NGraphics
                         }
                     }
                     break;
+                case "clipPath"://be referred to by other elements
+                    var xele = e.Elements();
+                    List<Element> xslelist = new List<Element>();
+                    AddElements(xslelist, xele, inheritPen, inheritBrush);
+                    var tempid = e.Attribute("id");
+                    if(tempid!=null)
+                        clippath.Add(tempid.Value, xslelist);
+                    break;
 
-                    
 
                 // color definition that can be referred to by other elements
                 case "linearGradient":
@@ -284,6 +292,13 @@ namespace NGraphics
 
             if (r != null)
             {
+                var cp = e.Attribute("clip-path");
+                if(cp!=null)
+                {
+                    List<Element> xd;
+                    clippath.TryGetValue(cp.Value.Trim().Replace("#", ""), out xd);
+                    r.ClipPath = xd;
+                }
                 r.Transform = ReadTransform(ReadString(e.Attribute("transform")));
                 var ida = e.Attribute("id");
                 if (ida != null && !string.IsNullOrEmpty(ida.Value))

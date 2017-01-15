@@ -176,11 +176,79 @@ namespace NGraphics
 			Initialize (new D2D1.RenderTarget (this.factories.D2DFactory, surface, properties));
 		}
 	}
+    public class D2DPathGeometry : ICanvas
+    {
+        public D2D1.PathGeometry PathGeometry { get; private set; }
+        D2D1.GeometrySink sink;
+        public D2DPathGeometry(D2D1.PathGeometry pg)
+        {
+            PathGeometry = pg;
+            pg.Open();
+        }
+        public ILayer CreateLayer()
+        {
+            throw new NotImplementedException();
+        }
 
-	/// <summary>
-	/// ICanvas wrapper over a Direct2D RenderTarget.
-	/// </summary>
-	public class RenderTargetCanvas : ICanvas
+        public void DrawEllipse(Rect frame, Pen pen = null, Brush brush = null)
+        {
+            sink.d
+        }
+
+        public void DrawImage(IImage image, Rect frame, double alpha = 1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DrawPath(IEnumerable<PathOp> ops, Pen pen = null, Brush brush = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DrawRectangle(Rect frame, Size corner, Pen pen = null, Brush brush = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DrawText(string text, Rect frame, Font font, TextAlignment alignment = TextAlignment.Left, Pen pen = null, Brush brush = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TextMetrics MeasureText(string text, Font font)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PopLayer()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PushLayer(ILayer layer, ref object layerParameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RestoreState()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveState()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Transform(Transform transform)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    /// <summary>
+    /// ICanvas wrapper over a Direct2D RenderTarget.
+    /// </summary>
+    public class RenderTargetCanvas : ICanvas
 	{
 		protected D2D1.RenderTarget renderTarget;
 		protected readonly Direct2DFactories factories;
@@ -481,7 +549,23 @@ namespace NGraphics
 				});
 			return new D2D1.GradientStopCollection (renderTarget, q.ToArray ());
 		}
-	}
+
+        public ILayer CreateLayer()
+        {
+            return new D2DLayer() { Layer = new D2D1.Layer(renderTarget) };
+        }
+
+        public void PushLayer(ILayer layer, ref object layerParameters)
+        {
+            var lp = (D2D1.LayerParameters)layerParameters;
+            renderTarget.PushLayer(ref lp, ((D2DLayer)layer).Layer);
+        }
+
+        public void PopLayer()
+        {
+            renderTarget.PopLayer();
+        }
+    }
 
 	public class Direct2DFactories
 	{

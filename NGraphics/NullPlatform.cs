@@ -74,7 +74,22 @@ namespace NGraphics
 			public void DrawImage (IImage image, Rect frame, double alpha = 1.0)
 			{
 			}
-		}
+
+            public ILayer CreateLayer()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void PushLayer(ILayer layer, ref object layerParameters)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void PopLayer()
+            {
+                throw new NotImplementedException();
+            }
+        }
 
 		class NullImage : IImage
 		{

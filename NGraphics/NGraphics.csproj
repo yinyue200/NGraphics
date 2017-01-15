@@ -39,6 +39,7 @@
     <Compile Include="Color.cs" />
     <Compile Include="IDrawable.cs" />
     <Compile Include="IImage.cs" />
+    <Compile Include="ILayer.cs" />
     <Compile Include="IPlatform.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="NullPlatform.cs" />

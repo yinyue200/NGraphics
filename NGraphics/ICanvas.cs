@@ -16,7 +16,10 @@ namespace NGraphics
 		void DrawRectangle (Rect frame, Size corner, Pen pen = null, Brush brush = null);
 		void DrawEllipse (Rect frame, Pen pen = null, Brush brush = null);
 		void DrawImage (IImage image, Rect frame, double alpha = 1.0);
-	}
+        ILayer CreateLayer();
+        void PushLayer(ILayer layer,ref object layerParameters);
+        void PopLayer();
+    }
 
 	public static class CanvasEx
 	{

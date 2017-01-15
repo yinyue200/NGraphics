@@ -65,5 +65,20 @@ namespace NGraphics
 		{
 			throw new NotImplementedException ();
 		}
-	}
+
+        public ILayer CreateLayer()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PushLayer(ILayer layer, ref object layerParameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PopLayer()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

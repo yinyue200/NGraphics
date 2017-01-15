@@ -110,6 +110,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="D2DLayer.cs" />
     <Compile Include="Direct2DCanvas.cs" />
     <Compile Include="Platforms.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
